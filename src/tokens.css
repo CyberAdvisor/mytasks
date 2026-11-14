@@ -57,6 +57,10 @@
   /* Text on the theme's strong fills (priority chips, the red due count, Delete buttons). */
   --on-strong: light-dark(#ffffff, #1e1e20);
 
+  /* The logo (Logo.svelte), the M-check monogram: its tile and its M. */
+  --logo-bg: light-dark(#712b13, #993c1d);
+  --logo-fg: light-dark(#f5c4b3, #faece7);
+
   /* Built-in list colors */
   --c-inbox: light-dark(#2f6fdb, #5a9cff);
   --c-today: light-dark(#e0a200, #ffc531);
