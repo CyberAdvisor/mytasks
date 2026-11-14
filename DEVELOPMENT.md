@@ -126,11 +126,11 @@ The built page carries a strict Content Security Policy in a `<meta>` tag (`src/
 
 ## Versions
 
-The app shows its version and commit at the bottom of the sidebar and on Setup, for example `v0.2.0 (a1b2c3d)`, and links it to the website's [Roadmap](https://mytasks.fyi/roadmap/) page. 1.0.0 (2026-11-13) was the first release at mytasks.fyi. The middle number goes up for new features and the last for fixes; the first number changes only for a major release, such as v2.0 on the Roadmap.
+The app shows its version and commit at the bottom of the sidebar and on Setup, for example `v0.2.0 (a1b2c3d)`, and links it to the website's [Roadmap](https://mytasks.fyi/roadmap/) page. 1.0.0 (2026-11-13) was the first release at mytasks.fyi. From Milestone 8, the first pull request in a milestone that changes the app raises the middle number (1.1.0), and later ones in the same milestone raise the last number (1.1.1); the first number changes only for a major release, such as v2.0 on the Roadmap.
 
 Release steps for each pull request that changes the app:
 
-1. Set the version in `package.json`: the middle number for new features, the last for fixes.
+1. Set the version in `package.json`: the middle number for the milestone's first pull request that changes the app, the last number for later ones.
 2. Add a section to [CHANGELOG.md](CHANGELOG.md).
 3. When a milestone completes or a planned feature changes, update the Roadmap page (`site/roadmap/index.html`) and its "Last updated" date in the same pull request.
 

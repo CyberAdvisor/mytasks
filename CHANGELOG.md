@@ -2,7 +2,18 @@
 
 What changed in each version of My Tasks. The app shows its version at the bottom of the sidebar and on the Setup screen; clicking it opens the [Roadmap](https://mytasks.fyi/roadmap/), which shows what's planned.
 
-Versions follow [Semantic Versioning](https://semver.org). 1.0.0 was the first release at mytasks.fyi. The middle number goes up for new features and the last number for fixes; the first number changes only for a major release, such as v2.0 on the Roadmap. Each pull request that changes the app adds its section here and sets the version in `package.json`. The format follows [Keep a Changelog](https://keepachangelog.com).
+Versions follow [Semantic Versioning](https://semver.org). 1.0.0 was the first release at mytasks.fyi. From Milestone 8, the first change to the app in a milestone raises the middle number (1.1.0) and later ones the last number (1.1.1); the first number changes only for a major release, such as v2.0 on the Roadmap. Each pull request that changes the app adds its section here and sets the version in `package.json`. The format follows [Keep a Changelog](https://keepachangelog.com).
+
+<a id="v1.1.0"></a>
+
+## 1.1.0 — 2026-11-14
+
+The new logo.
+
+### Changed
+
+- The logo is now an M whose last stroke rises into a check, in coral, in place of the blue placeholder. It follows the Light or Dark appearance in the app, and the system's appearance in the browser tab. The app icons and the website's logo and tab icon change with it. (#44)
+- An installed app may keep its old icon until it is removed and installed again. Your tasks are safe: they stay in your gist. (#44)
 
 <a id="v1.0.0"></a>
 
