@@ -4,6 +4,20 @@ What changed in each version of My Tasks. The app shows its version at the botto
 
 Versions follow [Semantic Versioning](https://semver.org). 1.0.0 was the first release at mytasks.fyi. From Milestone 8, the first change to the app in a milestone raises the middle number (1.1.0) and later ones the last number (1.1.1); the first number changes only for a major release, such as v2.0 on the Roadmap. Each pull request that changes the app adds its section here and sets the version in `package.json`. The format follows [Keep a Changelog](https://keepachangelog.com).
 
+<a id="v1.1.3"></a>
+
+## 1.1.3 — 2026-11-14
+
+Pictures for empty lists.
+
+### Added
+
+- An empty list now shows a small drawing in the list's colour, in the middle of the page, with one line of text. Each of the seven lists has its own. (#47)
+
+### Changed
+
+- An empty Inbox says "Your Inbox is clear. New tasks land here." (#47)
+
 <a id="v1.1.2"></a>
 
 ## 1.1.2 — 2026-11-14
