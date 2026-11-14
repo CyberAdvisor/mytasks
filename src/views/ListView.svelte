@@ -13,6 +13,7 @@
   import TodoList from '../components/TodoList.svelte';
   import ViewHeader from '../components/ViewHeader.svelte';
   import ChoiceDialog from '../components/ChoiceDialog.svelte';
+  import EmptyState from '../components/EmptyState.svelte';
   import TagBar from '../components/TagBar.svelte';
   import ListMenu from '../components/ListMenu.svelte';
   import { ui } from '../lib/state/ui.svelte';
@@ -77,15 +78,6 @@
   let mode = $derived<'open' | 'logbook' | 'trash'>(list === 'logbook' ? 'logbook' : list === 'trash' ? 'trash' : 'open');
   let isEmpty = $derived(!allFlat.length && !allGroups.length && !allProjects.length);
 
-  const EMPTY_TEXT: Record<L.BuiltInList, string> = {
-    inbox: 'Nothing in your Inbox. New tasks land here.',
-    today: 'Nothing planned for today.',
-    scheduled: 'Nothing scheduled for later.',
-    unscheduled: 'No open tasks.',
-    deferred: 'Nothing deferred.',
-    logbook: 'Completed tasks appear here.',
-    trash: 'Trash is empty.',
-  };
 
   /** Reordering rows: Today keeps its own order; other lists use container order. */
   const zoneFor = (field: 'sortKey' | 'todaySortKey'): DropZone => ({
@@ -172,7 +164,7 @@
 {/each}
 
 {#if isEmpty}
-  <p class="empty">{EMPTY_TEXT[list]}</p>
+  <EmptyState {list} />
 {/if}
 
 {#if confirmEmpty}
@@ -214,10 +206,5 @@
     font-size: 11px;
     font-weight: 400;
     color: var(--text-3);
-  }
-  .empty {
-    color: var(--text-3);
-    font-size: 14px;
-    margin: 24px 8px;
   }
 </style>
