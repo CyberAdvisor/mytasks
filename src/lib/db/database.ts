@@ -7,7 +7,7 @@
  * migrations.ts, which also upgrades lists from a gist or a backup file.
  */
 import Dexie, { type Table } from 'dexie';
-import { addContext, markMoved, stripDeleted } from './migrations';
+import { addCollapsed, addContext, markMoved, stripDeleted } from './migrations';
 import type {
   Area,
   ChangeLogEntry,
@@ -22,7 +22,7 @@ import type {
 } from '../model/types';
 
 /** The current schema version; synced lists record it (FR-19.4). */
-export const SCHEMA_VERSION = 4;
+export const SCHEMA_VERSION = 5;
 
 export class MyTasksDB extends Dexie {
   areas!: Table<Area, string>;
@@ -75,6 +75,10 @@ export class MyTasksDB extends Dexie {
           if (record.deletedAt) ctx.value = stripDeleted(record);
         });
       }
+    });
+    // Version 5: headings can be collapsed (FR-2.7); existing ones start expanded.
+    this.version(5).stores({}).upgrade(async (tx) => {
+      await tx.table('headings').toCollection().modify(addCollapsed);
     });
   }
 }

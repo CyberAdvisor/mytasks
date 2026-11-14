@@ -33,6 +33,14 @@ export function stripDeleted(row: Row): Row {
   return row.deletedAt ? tombstone(row as never) : row;
 }
 
+/**
+ * Version 5: headings can be collapsed (FR-2.7); existing ones start
+ * expanded. Deleted records stay tombstones, with no other fields.
+ */
+export function addCollapsed(row: Row): void {
+  if (!row.deletedAt) row.collapsed ??= false;
+}
+
 /** Synced tables, as named in a list. */
 const ALL_TABLES = ['areas', 'projects', 'headings', 'todos', 'checklistItems', 'tags', 'contexts', 'savedSearches'];
 
@@ -49,6 +57,9 @@ const STEPS: Record<number, (tables: Record<string, Row[]>) => void> = {
   },
   4: (t) => {
     for (const name of ALL_TABLES) t[name] = t[name].map(stripDeleted);
+  },
+  5: (t) => {
+    t.headings.forEach(addCollapsed);
   },
 };
 

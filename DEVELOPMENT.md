@@ -69,6 +69,7 @@ e2e/            Interface tests (Playwright); e2e/fakeGitHub.ts puts the same fa
 - Sync merges record by record; the later `modifiedAt` wins. A `modifiedAt` later than now, from the gist or on this device, counts as now; the corrected copy is pushed and saved on this device. The merge records the time this device had for each row it writes (`seen` in `payload.ts`), and `applyRemote` writes a row only while the device still has that time, or when the row is later, so an edit made during a sync is never overwritten.
 - This device's token, gist id and encryption key live in a separate database, `mytasks-device`, and never sync.
 - Schema upgrades are per-record steps in `src/lib/db/migrations.ts`. Dexie's upgrade blocks in `database.ts` call them, and `upgradeList` uses the same steps for a list from an older version (a gist, or a backup file). **A new schema version adds its step there, a `this.version(n)` block, an entry in `STEPS`, and raises `SCHEMA_VERSION`.**
+- Schema 5 (1.1.1) adds `collapsed` to headings (FR-2.7); areas already had it. Both sync like any field, and collapsing runs with `tx(…, { track: false })`, so it is never an undo step.
 - `readLocal` (`src/lib/sync/local.ts`) reads every synced table and the settings in one read transaction, so uploads and backup files are one consistent snapshot.
 - Once a device is connected, the app asks the browser to keep its storage (`navigator.storage.persist()`); the answer isn't shown.
 
@@ -154,4 +155,4 @@ v1 is built in milestones, each a pull request.
 | 6 | Finishing touches: 6a fixes (keys typed right after N, final Empty Trash); the website and the Setup acknowledgment (0.5.0, 0.6.0); the Roadmap page and "tasks" wording (0.7.0) | Done |
 | 7 | Ready for release (1.0.0): the security and privacy review and its fixes (0.7.1 to 0.9.1); back up and restore (0.10.0) | Done |
 
-Milestones 8 to 11 (v1.1 to v2.0) are on the website's [Roadmap](https://mytasks.fyi/roadmap/) page.
+Milestones 8 to 12 (v1.1 to v2.0) are on the website's [Roadmap](https://mytasks.fyi/roadmap/) page.

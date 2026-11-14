@@ -73,6 +73,8 @@ export interface Heading extends BaseRecord {
   title: string;
   projectId: ID;
   archived: boolean;
+  /** Its tasks hidden on the project page (FR-2.7); synced, like an area's. */
+  collapsed: boolean;
 }
 
 export interface Todo extends BaseRecord {

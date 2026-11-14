@@ -4,6 +4,22 @@ What changed in each version of My Tasks. The app shows its version at the botto
 
 Versions follow [Semantic Versioning](https://semver.org). 1.0.0 was the first release at mytasks.fyi. From Milestone 8, the first change to the app in a milestone raises the middle number (1.1.0) and later ones the last number (1.1.1); the first number changes only for a major release, such as v2.0 on the Roadmap. Each pull request that changes the app adds its section here and sets the version in `package.json`. The format follows [Keep a Changelog](https://keepachangelog.com).
 
+<a id="v1.1.1"></a>
+
+## 1.1.1 — 2026-11-14
+
+Collapsible areas and headings.
+
+### Added
+
+- An arrow beside each area in the sidebar hides or shows its projects, and one beside each heading in a project hides or shows its tasks. A collapsed heading shows how many open tasks it holds. The arrow beside an area shows when you point at it, and stays while the area is collapsed. Your other devices keep the same areas and headings collapsed. (#45)
+- Adding a task with a collapsed heading's + opens the heading first. (#45)
+
+### Changed
+
+- Your tasks are saved in a new format (schema 5), which upgrades by itself. A device still on 1.1.0 shows "Update needed — reload the app" after another device has synced 1.1.1. (#45)
+- The Roadmap page shows calendar events from your Mac as Milestone 9 (v1.2) and sequential projects in Milestone 8; Power editing, Your data and Sharing are now Milestones 10 to 12. The comparison tables show calendar events as Planned. (#45)
+
 <a id="v1.1.0"></a>
 
 ## 1.1.0 — 2026-11-14
