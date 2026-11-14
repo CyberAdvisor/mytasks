@@ -41,7 +41,7 @@ A better task manager that is **free**, **private** and **secure**. My Tasks giv
 | Saved searches | ✅ | — | ✅ Filters |
 | Repeating tasks | Planned | ✅ | ✅ |
 | Typed dates ("next fri") | Planned | ✅ | ✅ |
-| Calendar events with your tasks | — | ✅ | Pro |
+| Calendar events with your tasks | Planned | ✅ | Pro |
 | Reminders and notifications | — ² | ✅ | ✅ |
 | Board (Kanban) view | — | — | ✅ |
 | Sharing with others | — | — | ✅ |

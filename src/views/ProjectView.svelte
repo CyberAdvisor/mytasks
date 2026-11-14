@@ -108,6 +108,8 @@
   const headingZone: DropZone = { type: 'heading', drop: (hid, order) => repo.placeHeading(hid, order) };
 
   async function addTodo(headingId: ID | null = null) {
+    // A collapsed heading opens, so the new task shows (FR-2.7).
+    if (headingId && s.headings.find((h) => h.id === headingId)?.collapsed) await repo.setHeadingCollapsed(headingId, false);
     const todoId = await repo.createTodo({ projectId: id, headingId });
     ui.open(todoId);
   }
@@ -293,6 +295,16 @@
     {#each sections.headings as { heading, todos } (heading.id)}
       <section class="heading" use:dragItem={{ type: 'heading', id: heading.id }} use:dropZone={todoZone(heading.id)}>
         <div class="heading-row">
+          <button
+            type="button"
+            class="btn-plain disclose"
+            data-no-drag
+            aria-label={heading.collapsed ? 'Expand heading' : 'Collapse heading'}
+            aria-expanded={!heading.collapsed}
+            onclick={() => repo.setHeadingCollapsed(heading.id, !heading.collapsed)}
+          >
+            <Icon name={heading.collapsed ? 'chevron-right' : 'chevron-down'} size={12} />
+          </button>
           <EditableTitle
             value={heading.title}
             placeholder="New Heading"
@@ -301,6 +313,10 @@
             autofocus={heading.id === ui.newHeadingId}
             onsave={(v) => repo.renameHeading(heading.id, v)}
           />
+          {#if heading.collapsed}
+            {@const hidden = todos.filter(isOpen).length}
+            {#if hidden}<span class="hidden-count" title="Open tasks under this heading">{hidden}</span>{/if}
+          {/if}
           <button type="button" class="btn-plain small" aria-label="Add task under heading" onclick={() => addTodo(heading.id)}>
             <Icon name="plus" size={14} />
           </button>
@@ -318,7 +334,8 @@
             </div>
           </Popover>
         </div>
-        <TodoList {todos} {ref} />
+        <!-- Collapsed: the section is still a drop zone, so a task dropped here goes under it. -->
+        {#if !heading.collapsed}<TodoList {todos} {ref} />{/if}
       </section>
     {/each}
   </div>
@@ -387,6 +404,16 @@
   }
   .heading-row :global(input) {
     color: var(--accent-text);
+  }
+  .disclose {
+    padding: 4px 2px;
+    margin-left: -6px;
+    color: var(--text-2);
+  }
+  .hidden-count {
+    font-size: 12px;
+    color: var(--text-2);
+    padding: 0 4px;
   }
   .small {
     padding: 4px;

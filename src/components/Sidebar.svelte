@@ -148,12 +148,27 @@
       {#each areas as area (area.id)}
         {@const r = { kind: 'area', id: area.id } as Route}
         <div use:dragItem={{ type: 'area', id: area.id }} use:dropZone={projectZone(area.id)}>
-          <a href={hrefFor(r)} class="item area" class:active={isActive(r)} use:dropTarget={moveHere({ areaId: area.id })}>
-            <Icon name="area" color="var(--text-2)" size={16} />
-            <span class="label">{area.title || 'New Area'}</span>
-          </a>
+          <div class="area-row">
+            <!-- In the gutter before the area, shown on hover, and always while collapsed (FR-2.7). -->
+            <button
+              type="button"
+              class="disclose"
+              class:shut={area.collapsed}
+              data-no-drag
+              aria-label={area.collapsed ? `Expand ${area.title || 'New Area'}` : `Collapse ${area.title || 'New Area'}`}
+              aria-expanded={!area.collapsed}
+              onclick={() => repo.setAreaCollapsed(area.id, !area.collapsed)}
+            >
+              <Icon name={area.collapsed ? 'chevron-right' : 'chevron-down'} size={12} />
+            </button>
+            <a href={hrefFor(r)} class="item area" class:active={isActive(r)} use:dropTarget={moveHere({ areaId: area.id })}>
+              <Icon name="area" color="var(--text-2)" size={16} />
+              <span class="label">{area.title || 'New Area'}</span>
+            </a>
+          </div>
+          <!-- Empty while collapsed; the area's row still takes dropped projects. -->
           <ul class="lists">
-            {#each areaProjects($snapshot, area.id, true) as project (project.id)}
+            {#each area.collapsed ? [] : areaProjects($snapshot, area.id, true) as project (project.id)}
               {@const pr = { kind: 'project', id: project.id } as Route}
               <li use:dragItem={{ type: 'project', id: project.id }}>
                 <a href={hrefFor(pr)} class="item project" class:active={isActive(pr)} class:closed={project.status !== 'open'} use:dropTarget={project.status === 'open' ? moveHere({ projectId: project.id }) : null}>
@@ -287,7 +302,35 @@
   }
   .item.area {
     font-weight: 600;
+  }
+  .area-row {
+    position: relative;
     margin-top: 8px;
+  }
+  /* Sits in the sidebar's left padding, so area and list icons stay aligned. */
+  .disclose {
+    position: absolute;
+    left: -10px;
+    top: 0;
+    width: 14px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--text-2);
+  }
+  @media (hover: hover) {
+    .disclose {
+      opacity: 0;
+    }
+    .area-row:hover .disclose,
+    .disclose:focus-visible,
+    .disclose.shut {
+      opacity: 1;
+    }
   }
   .item.project {
     padding-left: 18px;

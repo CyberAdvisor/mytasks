@@ -6,7 +6,7 @@
  * each device's state is saved with readLocal and loaded back (loadDevice).
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { db } from '../src/lib/db/database';
+import { db, SCHEMA_VERSION } from '../src/lib/db/database';
 import { upgradeList } from '../src/lib/db/migrations';
 import * as repo from '../src/lib/db/repo';
 import { clearUndo, tx, undo } from '../src/lib/db/history';
@@ -131,7 +131,7 @@ describe('the backup file (FR-12.8)', () => {
     const config = await createList('tok-SECRET-123', PASS, ACK);
     const text = await buildBackup('2026-11-13T18:50:00.000Z');
     const file = JSON.parse(text) as BackupFile;
-    expect(file).toMatchObject({ format: BACKUP_FORMAT, formatVersion: 1, schema: 4, app: 'mytasks', savedAt: '2026-11-13T18:50:00.000Z' });
+    expect(file).toMatchObject({ format: BACKUP_FORMAT, formatVersion: 1, schema: SCHEMA_VERSION, app: 'mytasks', savedAt: '2026-11-13T18:50:00.000Z' });
     expect(typeof file.appVersion).toBe('string');
     expect(file.tables.todos.map((t) => (t as unknown as { title: string }).title)).toEqual(['kept']);
     expect(file.settings.map((s) => s.key)).toEqual(['autoP1']);
@@ -191,7 +191,7 @@ describe('checking a file before restoring (FR-12.8)', () => {
 
   it('accepts its own file', async () => {
     const backup = readBackup(JSON.stringify(await goodFile()));
-    expect(backup.list.schema).toBe(4);
+    expect(backup.list.schema).toBe(SCHEMA_VERSION);
     expect(backup.list.tables.todos).toHaveLength(1);
   });
 
@@ -229,7 +229,7 @@ describe('checking a file before restoring (FR-12.8)', () => {
     const old = { ...f, schema: 1, tables: { ...f.tables, todos: [task, { id: 'x', deletedAt: '2026-11-01T00:00:00.000Z', modifiedAt: '2026-11-01T00:00:00.000Z', title: 'secret' }] } };
     delete (old.tables as Partial<typeof old.tables>).contexts;
     const { list } = readBackup(JSON.stringify(old));
-    expect(list.schema).toBe(4);
+    expect(list.schema).toBe(SCHEMA_VERSION);
     expect(list.tables.contexts).toEqual([]);
     expect(list.tables.todos[0]).toMatchObject({ contextId: null, loggedAt: null });
     expect(list.tables.todos[1]).toEqual({ id: 'x', deletedAt: '2026-11-01T00:00:00.000Z', modifiedAt: '2026-11-01T00:00:00.000Z' });
@@ -264,7 +264,7 @@ describe('a gist saved at an older schema (carried in from the re-verification)'
     const id = await gistWith(schema3List());
     const config = await joinList('good', id, PASS, ACK);
     expect(await titles()).toEqual(['from 0.7']);
-    expect((await gistList(config)).schema).toBe(4);
+    expect((await gistList(config)).schema).toBe(SCHEMA_VERSION);
   });
 
   it('from schema 2 (tasks without loggedAt) loads rather than failing as damaged', async () => {
@@ -273,7 +273,7 @@ describe('a gist saved at an older schema (carried in from the re-verification)'
     const id = await gistWith({ ...old, schema: 2 });
     const config = await joinList('good', id, PASS, ACK);
     expect(await titles()).toEqual(['from 0.7']);
-    expect((await gistList(config)).schema).toBe(4);
+    expect((await gistList(config)).schema).toBe(SCHEMA_VERSION);
   });
 });
 

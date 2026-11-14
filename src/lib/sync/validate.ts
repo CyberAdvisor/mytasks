@@ -96,7 +96,7 @@ const FIELDS: Record<EntityName, Record<string, Rule>> = {
     loggedAt: orNull(timestamp),
     trashedAt: orNull(timestamp),
   },
-  headings: { title: str, projectId: id, archived: bool },
+  headings: { title: str, projectId: id, archived: bool, collapsed: bool },
   todos: {
     title: str,
     notes: str,

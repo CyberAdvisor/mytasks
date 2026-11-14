@@ -642,7 +642,7 @@ export function setProjectTrashed(id: ID, trashed: boolean): Promise<void> {
 export function createHeading(projectId: ID, title = ''): Promise<ID> {
   return tx(async () => {
     const keys = await siblingKeys<Heading>('headings', (h) => h.projectId === projectId);
-    const heading: Heading = { ...base(keyAtEnd(keys)), title, projectId, archived: false };
+    const heading: Heading = { ...base(keyAtEnd(keys)), title, projectId, archived: false, collapsed: false };
     await db.headings.add(heading);
     await log('headings', heading.id, ['*']);
     return heading.id;
@@ -651,6 +651,14 @@ export function createHeading(projectId: ID, title = ''): Promise<ID> {
 
 export function renameHeading(id: ID, title: string): Promise<void> {
   return tx(() => patch<Heading>('headings', id, { title }));
+}
+
+/**
+ * Collapse or expand a heading on its project page (FR-2.7). It syncs like
+ * any change, but isn't an undo step: it changes the view, not the tasks.
+ */
+export function setHeadingCollapsed(id: ID, collapsed: boolean): Promise<void> {
+  return tx(() => patch<Heading>('headings', id, { collapsed }), { track: false });
 }
 
 /** Place a heading at its position in `order`; its to-dos move with it (FR-10.7). */
@@ -713,6 +721,11 @@ export function createArea(title = ''): Promise<ID> {
 
 export function renameArea(id: ID, title: string): Promise<void> {
   return tx(() => patch<Area>('areas', id, { title }));
+}
+
+/** Collapse or expand an area in the sidebar (FR-2.7); synced, not an undo step. */
+export function setAreaCollapsed(id: ID, collapsed: boolean): Promise<void> {
+  return tx(() => patch<Area>('areas', id, { collapsed }), { track: false });
 }
 
 /** Place an area at its position in the sidebar `order` (FR-10.8). */
