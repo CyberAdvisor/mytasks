@@ -21,3 +21,23 @@ export function writeFlag(key: string, on: boolean): void {
     /* not remembered; harmless */
   }
 }
+
+/** Read a remembered number, or null when none is saved. */
+export function readNumber(key: string): number | null {
+  try {
+    const raw = localStorage.getItem(key);
+    const n = raw === null ? NaN : Number(raw);
+    return Number.isFinite(n) ? n : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Remember a number. */
+export function writeNumber(key: string, value: number): void {
+  try {
+    localStorage.setItem(key, String(value));
+  } catch {
+    /* not remembered; harmless */
+  }
+}

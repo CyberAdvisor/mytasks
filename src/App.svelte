@@ -8,6 +8,7 @@
 -->
 <script lang="ts">
   import Sidebar from './components/Sidebar.svelte';
+  import ResizeHandle from './components/ResizeHandle.svelte';
   import MoveDialog from './components/MoveDialog.svelte';
   import Icon from './components/Icon.svelte';
   import Toolbar from './components/Toolbar.svelte';
@@ -35,9 +36,12 @@
   import { KeyResolver, focusKind, isMac, typeAheadKey } from './lib/shortcuts';
   import { install } from './lib/pwa/install.svelte';
   import { update } from './lib/pwa/update.svelte';
+  import { readSidebarWidth } from './lib/sidebarWidth';
 
   const phoneQuery = window.matchMedia('(max-width: 767px)');
   let isPhone = $state(phoneQuery.matches);
+  // This device's sidebar width; phones show the sidebar full width instead.
+  let sidebarWidth = $state(readSidebarWidth());
 
   $effect(() => {
     const onChange = () => (isPhone = phoneQuery.matches);
@@ -104,7 +108,10 @@
 {:else}
   <div class="app">
     {#if showSidebar}
-      <div class="side"><Sidebar /></div>
+      <div class="side" style:width={isPhone ? null : `${sidebarWidth}px`}>
+        <Sidebar />
+        {#if !isPhone}<ResizeHandle bind:width={sidebarWidth} />{/if}
+      </div>
     {/if}
 
     {#if showMain}
@@ -178,7 +185,7 @@
     height: 100%;
   }
   .side {
-    width: 260px;
+    position: relative;
     flex: none;
     height: 100%;
   }

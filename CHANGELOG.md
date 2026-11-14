@@ -4,6 +4,16 @@ What changed in each version of My Tasks. The app shows its version at the botto
 
 Versions follow [Semantic Versioning](https://semver.org). 1.0.0 was the first release at mytasks.fyi. From Milestone 8, the first change to the app in a milestone raises the middle number (1.1.0) and later ones the last number (1.1.1); the first number changes only for a major release, such as v2.0 on the Roadmap. Each pull request that changes the app adds its section here and sets the version in `package.json`. The format follows [Keep a Changelog](https://keepachangelog.com).
 
+<a id="v1.1.2"></a>
+
+## 1.1.2 — 2026-11-14
+
+A sidebar you can resize.
+
+### Added
+
+- Drag the sidebar's right edge to make it wider or narrower, from 200 to 400 pixels. Double-click the edge to put it back to its usual width. Each device remembers its own width. On iPad the edge can be dragged with a finger; phones show the lists full screen, so there is nothing to resize. (#46)
+
 <a id="v1.1.1"></a>
 
 ## 1.1.1 — 2026-11-14
