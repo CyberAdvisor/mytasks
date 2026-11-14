@@ -12,6 +12,8 @@ test('Home screen of lists, a list, and the + button', async ({ page, context })
   await connect(page);
   const lists = page.getByRole('navigation', { name: 'Lists' });
   await expect(page.getByRole('toolbar', { name: 'Actions' })).toBeHidden();
+  // The lists fill the screen, so there is no edge to resize (Section 6).
+  await expect(page.getByRole('separator', { name: 'Resize sidebar' })).toHaveCount(0);
 
   await lists.getByRole('link', { name: 'Inbox' }).click();
   await expect(lists).toBeHidden();
